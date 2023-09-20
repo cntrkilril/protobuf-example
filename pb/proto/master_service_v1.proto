@@ -1,0 +1,239 @@
+syntax = "proto3";
+import "google/protobuf/empty.proto";
+
+package master;
+option go_package = "./master_service";
+
+service MasterServiceV1 {
+  rpc CreateMaster(CreateMasterRequestV1) returns(MasterEntityV1) {}
+  rpc UpdateMaster(MasterEntityV1) returns(MasterEntityV1) {}
+  rpc GetMasterByID(GetMasterByIDRequestV1) returns(MasterEntityV1) {}
+  rpc GetAllMaster(GetAllMasterRequestV1) returns(GetAllMasterResponseV1) {}
+  rpc DeleteMaster(DeleteMasterRequestV1) returns(google.protobuf.Empty) {}
+}
+
+service ProfileServiceV1 {
+  rpc CreateProfile(CreateProfileRequestV1) returns(ProfileEntityV1) {}
+  rpc UpdateProfile(ProfileEntityV1) returns(ProfileEntityV1) {}
+  rpc GetProfileByID(GetProfileByIDRequestV1) returns(ProfileEntityV1) {}
+  rpc GetProfileByMasterID(GetProfileByMasterIDRequestV1) returns(ProfileEntityV1) {}
+  rpc GetAllProfile(GetAllProfileRequestV1) returns(GetAllProfileResponseV1) {}
+  rpc DeleteProfile(DeleteProfileRequestV1) returns (google.protobuf.Empty) {}
+}
+
+service SocialNetworkTypeServiceV1 {
+  rpc CreateSocialNetworkType(CreateSocialNetworkTypeRequestV1) returns(SocialNetworkTypeEntityV1) {}
+  rpc UpdateSocialNetworkType(SocialNetworkTypeEntityV1) returns(SocialNetworkTypeEntityV1) {}
+  rpc GetAllSocialNetworkType(google.protobuf.Empty) returns(GetAllSocialNetworkTypeResponseV1) {}
+  rpc GetSocialNetworkTypeByID(GetSocialNetworkTypeByIDRequestV1) returns(SocialNetworkTypeEntityV1) {}
+  rpc DeleteSocialNetworkType(DeleteSocialNetworkTypeRequestV1) returns(google.protobuf.Empty) {}
+}
+
+service SocialNetworkServiceV1 {
+  rpc CreateSocialNetwork(CreateSocialNetworkRequestV1) returns(SocialNetworkEntityV1) {}
+  rpc UpdateSocialNetwork(SocialNetworkEntityV1) returns(SocialNetworkEntityV1) {}
+  rpc GetSocialNetworkByID(GetSocialNetworkByIDRequestV1) returns(SocialNetworkEntityV1) {}
+  rpc GetSocialNetworkByProfileID(GetSocialNetworkByProfileIDRequestV1) returns(GetSocialNetworkByProfileIDResponseV1) {}
+  rpc DeleteSocialNetwork(DeleteSocialNetworkRequestV1) returns (google.protobuf.Empty) {}
+}
+
+service ImageServiceV1 {
+  rpc CreateImage(CreateImageRequestV1) returns(ImageEntityV1) {}
+  rpc UpdateImage(ImageEntityV1) returns(ImageEntityV1) {}
+  rpc GetImageByID(GetImageByIDRequestV1) returns(ImageEntityV1) {}
+  rpc GetImageByProfileID(GetImageByProfileIDRequestV1) returns(GetImageByProfileIDResponseV1) {}
+  rpc DeleteImage(DeleteImageRequestV1) returns (google.protobuf.Empty) {}
+}
+
+service CategoryMasterServiceV1 {
+  rpc CreateCategoryMaster(CategoryMasterEntityV1) returns(CategoryMasterEntityV1) {}
+  rpc GetCategoryMaster(CategoryMasterEntityV1) returns(CategoryMasterEntityV1) {}
+  rpc GetCategoryMasterByCategoryID(GetCategoryMasterByCategoryIDRequestV1) returns(GetCategoryMasterByCategoryIDResponseV1) {}
+  rpc GetCategoryMasterByMasterID(GetCategoryMasterByMasterIDRequestV1) returns(GetCategoryMasterByMasterIDResponseV1) {}
+  rpc DeleteCategoryMaster(CategoryMasterEntityV1) returns(google.protobuf.Empty) {}
+}
+
+// master
+message MasterEntityV1 {
+  int64 id = 1;
+  string tg = 2;
+  string password = 3;
+  bool isBanned = 4;
+  string banReason = 5;
+}
+
+message CreateMasterRequestV1 {
+  string tg = 1;
+  string password = 2;
+}
+
+message GetMasterByIDRequestV1 {
+  int64 id = 1 ;
+}
+
+message GetAllMasterRequestV1 {
+  int64 limit = 1;
+  int64 offset = 2;
+}
+
+message GetAllMasterResponseV1 {
+  int64 count = 1;
+  repeated MasterEntityV1 masters = 2;
+}
+
+message DeleteMasterRequestV1 {
+  int64 id = 1 ;
+}
+
+// profile
+message ProfileEntityV1 {
+  int64 id = 1;
+  int64 master_id = 2;
+  string avatar = 3;
+  string name = 4;
+  string surname = 5;
+  string phone = 6;
+  string address = 7;
+  string description = 8;
+  bool isApproved = 9;
+}
+
+message CreateProfileRequestV1 {
+  int64 master_id = 1;
+  string avatar = 2;
+  string name = 3;
+  string surname = 4;
+  string phone = 5;
+  string address = 6;
+  string description = 7;
+}
+
+message GetProfileByIDRequestV1 {
+  int64 id = 1 ;
+}
+
+message GetProfileByMasterIDRequestV1 {
+  int64 master_id = 1 ;
+}
+
+message GetAllProfileRequestV1 {
+  int64 limit = 1;
+  int64 offset = 2;
+}
+
+message GetAllProfileResponseV1 {
+  int64 count = 1;
+  repeated ProfileEntityV1 profiles = 2;
+}
+
+message DeleteProfileRequestV1 {
+  int64 id = 1 ;
+}
+
+// social_network_type
+message SocialNetworkTypeEntityV1 {
+  int64 id = 1;
+  string name = 2;
+  string icon = 3;
+  bool is_default = 4;
+}
+
+message CreateSocialNetworkTypeRequestV1 {
+  string name = 1;
+  string icon = 2;
+  bool is_default = 3;
+}
+
+message GetSocialNetworkTypeByIDRequestV1 {
+  int64 id = 1;
+}
+
+message GetAllSocialNetworkTypeResponseV1 {
+  repeated SocialNetworkTypeEntityV1 social_networks_type = 1;
+}
+
+message DeleteSocialNetworkTypeRequestV1 {
+  int64 id = 1;
+}
+
+
+// social_network
+message SocialNetworkEntityV1 {
+  int64 id = 1;
+  int64 profile_id = 2;
+  int64 type_id = 3;
+  string link = 4;
+}
+
+message CreateSocialNetworkRequestV1 {
+  int64 type_id = 1;
+  int64 profile_id = 2;
+  string link = 3;
+}
+
+message GetSocialNetworkByIDRequestV1 {
+  int64 id = 1 ;
+}
+
+message GetSocialNetworkByProfileIDRequestV1 {
+  int64 profile_id = 1;
+}
+
+message GetSocialNetworkByProfileIDResponseV1 {
+  repeated SocialNetworkEntityV1 social_networks = 1;
+}
+
+message DeleteSocialNetworkRequestV1 {
+  int64 id = 1 ;
+}
+
+// image
+message ImageEntityV1 {
+  int64 id = 1;
+  string content = 2;
+  int64 profile_id = 3;
+}
+
+message CreateImageRequestV1 {
+  string content = 1;
+  int64 profile_id = 2;
+}
+
+message GetImageByIDRequestV1 {
+  int64 id = 1;
+}
+
+message GetImageByProfileIDRequestV1 {
+  int64 profile_id = 1;
+}
+
+message GetImageByProfileIDResponseV1 {
+  repeated ImageEntityV1 images = 1;
+}
+
+message DeleteImageRequestV1 {
+  int64 id = 1;
+}
+
+// category
+message CategoryMasterEntityV1 {
+  int64 category_id = 1;
+  int64 master_id = 2;
+}
+
+message GetCategoryMasterByCategoryIDRequestV1 {
+  int64 category_id = 1;
+}
+
+message GetCategoryMasterByMasterIDRequestV1 {
+  int64 master_id = 1;
+}
+
+
+message GetCategoryMasterByMasterIDResponseV1 {
+  repeated CategoryMasterEntityV1 category_masters = 1;
+}
+
+message GetCategoryMasterByCategoryIDResponseV1 {
+  repeated CategoryMasterEntityV1 category_masters = 1;
+}

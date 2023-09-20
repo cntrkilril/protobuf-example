@@ -1,0 +1,76 @@
+syntax = "proto3";
+import "google/protobuf/empty.proto";
+
+package role;
+option go_package = "./role_service";
+
+// roles
+message RoleEntityV1 {
+  int32 ID = 1;
+  string title = 2;
+  string alias = 3;
+  string description = 4;
+}
+
+message AllRoleEntityV1 {
+  repeated RoleEntityV1 roles = 1;
+}
+
+message CreateRoleRequestV1 {
+  string title = 1;
+  string alias = 2;
+  string description = 3;
+}
+
+message GetRoleByIDRequestV1 {
+  int32 ID = 1;
+}
+
+message DeleteRoleRequestV1 {
+  int32 ID = 1;
+}
+
+// check
+message CheckAdminRoleRequestV1 {
+  string adminID = 1;
+  string alias = 2;
+}
+
+message CheckAdminRoleResponseV1 {
+  bool ok = 1;
+}
+
+// admins with alias
+message CreateAdminRoleRequestV1 {
+  string adminID = 1;
+  int32 roleID = 2;
+}
+
+message AdminRoleEntityV1 {
+  int32 ID = 1;
+  string adminID = 2;
+  int32 roleID = 3;
+}
+
+message AllAdminRoleEntityV1 {
+  repeated AdminRoleEntityV1 admin_roles = 1;
+}
+
+message DeleteAdminRoleRequestV1 {
+  string adminID = 1;
+}
+
+service RoleServiceV1 {
+  rpc CreateRole(CreateRoleRequestV1) returns (RoleEntityV1) {}
+  rpc GetRoleByID(GetRoleByIDRequestV1) returns (RoleEntityV1) {}
+  rpc GetAllRole(google.protobuf.Empty) returns (AllRoleEntityV1) {}
+  rpc UpdateRole(RoleEntityV1) returns (RoleEntityV1) {}
+  rpc DeleteRole(DeleteRoleRequestV1) returns (google.protobuf.Empty) {}
+
+  rpc CheckAdminRole(CheckAdminRoleRequestV1) returns (CheckAdminRoleResponseV1) {}
+
+  rpc CreateAdminRole(CreateAdminRoleRequestV1) returns (AdminRoleEntityV1) {}
+  rpc UpdateAdminRole(AdminRoleEntityV1) returns (AdminRoleEntityV1) {}
+  rpc DeleteAdminRole(DeleteAdminRoleRequestV1) returns (google.protobuf.Empty) {}
+  rpc GetAllAdminRole(google.protobuf.Empty) returns (AllAdminRoleEntityV1) {}
+}

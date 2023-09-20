@@ -1,0 +1,57 @@
+syntax = "proto3";
+import "google/protobuf/empty.proto";
+
+package client;
+option go_package = "./client_service";
+
+service ClientServiceV1 {
+  rpc CreateClient(CreateClientRequestV1) returns(ClientEntityV1) {}
+  rpc UpdateClient(ClientEntityV1) returns(ClientEntityV1) {}
+  rpc DeleteClient(DeleteClientRequestV1) returns(google.protobuf.Empty) {}
+  rpc GetClientByID(GetClientByIDRequestV1) returns(ClientEntityV1) {}
+  rpc GetClientByTgUsername(GetClientByTgUsernameRequestV1) returns(ClientEntityV1) {}
+  rpc GetAllClient(GetAllClientRequestV1) returns(GetAllClientResponseV1) {}
+}
+
+message ClientEntityV1 {
+  int64 id = 1;
+  string tg = 2;
+  string password = 3;
+  string name = 4;
+  string avatar = 5;
+  bool isBanned = 6;
+  string banReason = 7;
+  int64 tgID = 8;
+  string confirmCode = 9;
+}
+
+message CreateClientRequestV1 {
+  string tg = 1;
+  string password = 2;
+  string name = 3;
+  string avatar = 4;
+  bool isBanned = 5;
+  string banReason = 6;
+}
+
+message DeleteClientRequestV1 {
+  int64 id = 1;
+}
+
+message GetClientByIDRequestV1 {
+  int64 id = 1;
+}
+
+message GetClientByTgUsernameRequestV1 {
+  string tg = 1;
+}
+
+message GetAllClientRequestV1 {
+  int64 limit = 1;
+  int64 offset = 2;
+}
+
+message GetAllClientResponseV1 {
+  int64 count = 1;
+  repeated ClientEntityV1 clients = 2;
+}

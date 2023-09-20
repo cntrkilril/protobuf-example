@@ -1,0 +1,32 @@
+syntax = "proto3";
+import "google/protobuf/timestamp.proto";
+import "google/protobuf/empty.proto";
+
+package session;
+option go_package = "./session_service";
+
+message CreateSessionV1 {
+  string adminID = 1;
+}
+
+message Session {
+  string sessionKey = 1;
+  string adminID = 2;
+  google.protobuf.Timestamp expiresAt = 3;
+  bool isActive = 4;
+}
+
+message GetBySessionKeyV1{
+  string sessionKey = 1;
+}
+
+message DeleteSessionV1{
+  string sessionKey = 1;
+}
+
+service SessionServiceV1 {
+  rpc Create(CreateSessionV1) returns(Session) {}
+  rpc GetBySessionKey(GetBySessionKeyV1) returns (Session) {}
+  rpc Update(Session) returns (Session) {}
+  rpc Delete(DeleteSessionV1) returns (google.protobuf.Empty) {}
+}

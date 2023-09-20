@@ -1,0 +1,37 @@
+syntax = "proto3";
+import "google/protobuf/empty.proto";
+
+package invite_token;
+option go_package = "./invite_token_service";
+
+
+message GetTokenDataRequestV1 {
+  string token = 1;
+}
+
+message DeleteTokenRequestV1 {
+  string token = 1;
+}
+
+message UpdateTokenRequestV1 {
+  string token = 1;
+  bool isUsed = 2;
+}
+
+message InviteTokenEntity {
+  string token = 1;
+  bool isUsed = 2;
+}
+
+message GetAllTokensResponseV1 {
+  int64 count = 1;
+  repeated InviteTokenEntity tokens = 2;
+}
+
+service InviteTokenServiceV1 {
+  rpc Create(google.protobuf.Empty) returns(InviteTokenEntity) {}
+  rpc GetTokenData(GetTokenDataRequestV1) returns(InviteTokenEntity) {}
+  rpc GetAllTokens(google.protobuf.Empty) returns(GetAllTokensResponseV1) {}
+  rpc Update(UpdateTokenRequestV1) returns(InviteTokenEntity) {}
+  rpc Delete(DeleteTokenRequestV1) returns(google.protobuf.Empty) {}
+}

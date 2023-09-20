@@ -1,0 +1,10 @@
+stages:
+  - lint
+
+lint:
+  stage: lint
+  tags:
+    - dev
+  image: golangci/golangci-lint:v1.52.2-alpine
+  script:
+    - golangci-lint run --config=./.golangci.yml --timeout=3m

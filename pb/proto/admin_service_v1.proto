@@ -1,0 +1,56 @@
+syntax = "proto3";
+import "google/protobuf/timestamp.proto";
+
+package admin;
+option go_package = "./admin_service";
+
+message CreateAdminRequestV1 {
+  string tgUsername = 1;
+  string password = 2;
+}
+
+message GetByTgUsernameV1 {
+  string tgUsername = 1;
+}
+
+message AdminEntityV1 {
+  string ID = 1;
+  string tgUsername = 2;
+  bool isTgConfirmed = 3;
+  string tgConfirmCode = 4;
+  int64 tgChatID = 5;
+  string password = 6;
+  google.protobuf.Timestamp createdAt = 7;
+  google.protobuf.Timestamp updatedAt = 8;
+  google.protobuf.Timestamp lastLogin = 9;
+}
+
+message GetByIDV1 {
+  string ID = 1;
+}
+
+message CheckPasswordRequestV1 {
+  string hashedPassword = 1;
+  string password = 2;
+}
+
+message CheckPasswordResponseV1 {
+  bool ok = 1;
+}
+
+message GenerateTelegramCodeRequestV1 {
+  string tgUsername = 1;
+}
+
+message GenerateTelegramCodeResponseV1 {
+  string code = 1;
+}
+
+service AdminServiceV1 {
+  rpc CreateAdmin(CreateAdminRequestV1) returns (AdminEntityV1) {}
+  rpc GetByTgUsername(GetByTgUsernameV1) returns (AdminEntityV1) {}
+  rpc UpdateAdmin(AdminEntityV1) returns (AdminEntityV1) {}
+  rpc GetByID(GetByIDV1) returns (AdminEntityV1) {}
+  rpc CheckPassword(CheckPasswordRequestV1) returns (CheckPasswordResponseV1) {}
+  rpc GenerateTelegramCode(GenerateTelegramCodeRequestV1) returns (GenerateTelegramCodeResponseV1){}
+}

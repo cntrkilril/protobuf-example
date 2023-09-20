@@ -1,0 +1,24 @@
+syntax = "proto3";
+import "google/protobuf/empty.proto";
+
+package auth;
+option go_package = "./auth_service";
+
+message AuthenticateAdminRequestV1{
+  string tgUsername = 1;
+  string password = 2;
+}
+
+message AuthenticateAdminResponseV1{
+  string sessionKey = 1;
+}
+
+message ConfirmAdminSessionRequestV1 {
+  string sessionKey = 1;
+  string tgCode = 2;
+}
+
+service AuthServiceV1 {
+  rpc AuthenticateAdmin(AuthenticateAdminRequestV1) returns (AuthenticateAdminResponseV1) {}
+  rpc ConfirmAdminSession(ConfirmAdminSessionRequestV1) returns (google.protobuf.Empty) {}
+}

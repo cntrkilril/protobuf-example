@@ -1,0 +1,103 @@
+syntax = "proto3";
+import "google/protobuf/empty.proto";
+import "google/protobuf/timestamp.proto";
+
+package services;
+option go_package = "./services_service";
+
+service ServicesServiceV1 {
+  rpc CreateService(CreateServiceRequestV1) returns(ServiceV1) {}
+  rpc UpdateService(ServiceV1) returns(ServiceV1) {}
+  rpc GetServicesByMasterID(GetServicesByMasterIDRequestV1) returns(ServicesArrayV1) {}
+  rpc GetServicesByCategoryID(GetServiceByCategoryIDRequestV1) returns(ServicesArrayV1) {}
+  rpc GetServiceByID(GetServiceByIDRequestV1) returns(ServiceV1) {}
+  rpc DeleteService(DeleteServiceRequestV1) returns(google.protobuf.Empty) {}
+}
+
+service CategoriesServiceV1 {
+  rpc CreateCategory(CreateCategoryRequestV1) returns(CategoryV1) {}
+  rpc UpdateCategory(CategoryV1) returns(CategoryV1) {}
+  rpc GetCategoryByID(GetCategoryByIDRequestV1) returns(CategoryV1) {}
+  rpc GetCategories(GetCategoriesRequestV1) returns(CategoriesArrayV1) {}
+  rpc DeleteCategory(DeleteCategoryRequestV1) returns(google.protobuf.Empty) {}
+}
+
+
+// Services
+message ServiceV1 {
+  int64 ID = 1;
+  string name = 2;
+  string description = 3;
+  string price = 4;
+  string duration = 5;
+  int64 categoryID = 6;
+  int64 masterID = 7;
+}
+
+message CreateServiceRequestV1 {
+  string name = 1;
+  string description = 2;
+  string price = 3;
+  string duration = 4;
+  int64 categoryID = 5;
+  int64 masterID = 6;
+}
+
+message GetServiceByCategoryIDRequestV1 {
+  int64 categoryID = 1;
+  int64 limit = 2;
+  int64 offset = 3;
+}
+
+message GetServiceByIDRequestV1 {
+  int64 ID = 1;
+}
+
+message DeleteServiceRequestV1 {
+  int64 ID = 1;
+}
+
+message GetServicesByMasterIDRequestV1 {
+  int64 masterID = 1;
+  int64 limit = 2;
+  int64 offset = 3;
+}
+
+message ServicesArrayV1 {
+  int64 count = 1;
+  repeated ServiceV1 services = 2;
+}
+
+
+// Categories
+
+message CategoryV1 {
+  int64 ID = 1;
+  string name = 2;
+  bool isVisible = 3;
+  google.protobuf.Timestamp createdAt = 4;
+}
+
+message CreateCategoryRequestV1 {
+  string name = 1;
+  bool isVisible = 2;
+  google.protobuf.Timestamp createdAt = 3;
+}
+
+message GetCategoryByIDRequestV1 {
+  int64 ID = 1;
+}
+
+message DeleteCategoryRequestV1 {
+  int64 ID = 1;
+}
+
+message CategoriesArrayV1 {
+  int64 count = 1;
+  repeated CategoryV1 categories = 2;
+}
+
+message GetCategoriesRequestV1 {
+  int64 limit = 1;
+  int64 offset = 2;
+}

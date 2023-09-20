@@ -1,0 +1,133 @@
+syntax = "proto3";
+import "google/protobuf/empty.proto";
+import "google/protobuf/wrappers.proto";
+
+package appointment;
+option go_package = "./appointment_service";
+
+service AppointmentServiceV1 {
+  rpc CreateAppointment(CreateAppointmentRequestV1) returns(AppointmentEntityV1) {}
+  rpc CancelAppointment(CancelAppointmentRequestV1) returns(AppointmentEntityV1) {}
+  rpc ConfirmAppointment(ConfirmAppointmentRequestV1) returns(AppointmentEntityV1) {}
+  rpc GetAppointmentByMasterID(GetAppointmentByMasterIDRequestV1) returns(GetAppointmentByMasterIDResponseV1) {}
+  rpc GetAppointmentByClientID(GetAppointmentByClientIDRequestV1) returns(GetAppointmentByClientIDResponseV1) {}
+}
+
+service TimeCellServiceV1 {
+  rpc GetAvailableTimeByServiceIDAndDate(GetAvailableTimeByServiceIDAndDateRequestV1) returns(GetAvailableTimeByServiceIDAndDateResponseV1) {}
+}
+
+service WorkTimeServiceV1 {
+  rpc GetWorkTimeByMasterID(GetWorkTimeByMasterIDRequestV1) returns(GetWorkTimeByMasterIDResponseV1) {}
+  rpc UpdateWorkTime(UpdateWorkTimeRequestV1) returns(WorkTimeEntityV1) {}
+  rpc DeleteWorkTime(DeleteWorkTimeRequestV1) returns(google.protobuf.Empty) {}
+}
+
+message GetAppointmentByClientIDRequestV1 {
+  int64 client_id = 1;
+  int64 limit = 2;
+  int64 offset = 3;
+}
+
+message GetAppointmentByClientIDResponseV1 {
+  int64 count = 1;
+  repeated AppointmentEntityV1 appointments = 2;
+}
+
+message GetAppointmentByMasterIDRequestV1 {
+  int64 master_id = 1;
+  int64 limit = 2;
+  int64 offset = 3;
+}
+
+message GetAppointmentByMasterIDResponseV1 {
+  int64 count = 1;
+  repeated AppointmentEntityV1 appointments = 2;
+}
+
+message ConfirmAppointmentRequestV1 {
+  int64 id = 1;
+  int64 client_id = 2;
+}
+
+message CancelAppointmentRequestV1 {
+  int64 id = 1;
+  string cancel_reason = 2;
+  string cancelled_by = 3;
+  int64 cancelled_by_id = 4;
+  string cancelled_at = 5;
+}
+
+message CreateAppointmentRequestV1 {
+  int64 client_id = 1;
+  int64 service_id = 2;
+  string start_time = 3;
+  string end_time = 4;
+  string date = 5;
+  bool is_confirmed = 6;
+  google.protobuf.StringValue cancelled_at = 7;
+  google.protobuf.StringValue cancel_reason = 8;
+  google.protobuf.StringValue cancelled_by = 9;
+  google.protobuf.Int64Value cancelled_by_id = 10;
+  int64 master_id = 11;
+}
+
+message AppointmentEntityV1 {
+  int64 id = 1;
+  int64 client_id = 2;
+  int64 service_id = 3;
+  string start_time = 4;
+  string end_time = 5;
+  string date = 6;
+  bool is_confirmed = 7;
+  string cancelled_at = 8;
+  string cancel_reason = 9;
+  string cancelled_by = 10;
+  int64 cancelled_by_id = 11;
+  int64 master_id = 12;
+}
+
+message GetAvailableTimeByServiceIDAndDateRequestV1 {
+  int64 service_id = 1;
+  string date = 2;
+}
+
+message AvailableTimeEntityV1 {
+  string start_time = 1;
+  string end_time = 2;
+}
+
+message GetAvailableTimeByServiceIDAndDateResponseV1 {
+  repeated AvailableTimeEntityV1 time_array = 1;
+}
+
+message WorkTimeEntityV1 {
+  int64 id = 1;
+  string start_time = 2;
+  string end_time = 3;
+  string date = 4;
+  int64 master_id = 5;
+}
+
+message UpdateWorkTimeRequestV1 {
+  string start_time = 1;
+  string end_time = 2;
+  string date = 3;
+  int64 master_id = 4;
+}
+
+message DeleteWorkTimeRequestV1 {
+  string date = 1;
+  int64 master_id = 2;
+}
+
+message GetWorkTimeByMasterIDRequestV1 {
+  int64 master_id = 1;
+  int64 limit = 2;
+  int64 offset = 3;
+}
+
+message GetWorkTimeByMasterIDResponseV1 {
+  int64 count = 1;
+  repeated WorkTimeEntityV1 work_times = 2;
+}

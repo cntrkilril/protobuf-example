@@ -1,0 +1,18 @@
+syntax = "proto3";
+
+package admin_registration;
+option go_package = "./admin_registration_service";
+
+message RegisterAdminRequestV1 {
+  string tgUsername = 1;
+  string password = 2;
+  string inviteToken = 3;
+}
+
+message RegisterAdminResponseV1 {
+  string code = 1;
+}
+
+service AdminRegistrationServiceV1 {
+  rpc Register(RegisterAdminRequestV1) returns(RegisterAdminResponseV1) {}
+}
